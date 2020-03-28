@@ -1,0 +1,215 @@
+/*
+COLORS:
+
+Light green: #7ed56f
+Medium green: #55c57a
+Dark green: #28b485
+
+*/
+
+/* basic reset */
+
+*
+,*::after
+,*::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html{
+    /* font-size: 10px(62.5% of 16px which is sdefault root font size); */
+    font-size: 62.5%;
+}
+
+/* the font size defined in html tag is root font size(by default it is 16px but it is easier for us to define rem when it is 10px) which is used in rem units. */
+
+body{
+    font-family: "Lato",sans-serif;
+    font-weight: 400;
+    /* font-size: 1.6rem; */
+    line-height: 1.7;
+    color: #777; 
+    padding: 3rem;
+    box-sizing: border-box;
+}
+
+
+.header{
+    height: 95vh;
+    background-image:linear-gradient(to right bottom,rgba(126,213,111,0.8),rgba(40,180,131,0.8)) ,url(../img/hero.jpg);
+    background-size: cover;
+    background-position:top;
+    position: relative;
+    /* below clip path property is applied to top right bottom left corner and its coordinates are defined in  which how much a element is shown on the main screen and rest are hidden and all distances are measured from top left corner*/
+    clip-path: polygon(0 0,100% 0,100% 75vh,0 100%);
+}
+
+/* the easiest way to center anything is with transform, top and left properties. */
+
+.header__logo-box{
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+}
+
+.header__logo{
+    height: 3.5rem;
+}
+.header__text-box{
+    position: absolute;
+    top: 40%;
+    left:50%; 
+    /* the above three properties are applied in relation(inheritance) to parent element(which is header element but the translate property is applied to element itself rather than being applied with respect to parent element.) */
+    transform: translate(-50%,-50%);
+    text-align: center;
+    /* text align is to centre the button */
+}
+
+/* transform property plays with coordinates of an element and translate property changes the coordinates of element in x(from left side of screen to right side) and y(from top of screen to bottom) direction */
+
+.heading-primary{
+    color:#fff;
+    text-transform: uppercase;
+
+    backface-visibility: hidden;
+    margin-bottom: 6rem;
+    /* margin bottom is for button */
+}
+
+/* backface-visibility property sets whether back face of an element is visible when towards user(for 3d images) but when we use tranform property in 2d images this property is used to remove shaky animation(as entire element is moving in animation) a small hack */
+
+.heading-primary--main{
+    display: block;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 3.5rem;
+
+    animation-name: moveinleft;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+
+    /* animation-iteration-count: 3; 
+    animation-delay:3s; */
+}
+
+.heading-primary--sub{
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1.7rem;
+
+    animation-name: moveinright;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+/* animations using keyframes property where 0% is intial stage of animation and 100% is final stage of animation and we can put many more middle stages in animation and each animation is given a name*/
+
+@keyframes moveinleft{
+    0%{
+        opacity: 0;
+        transform: translateX(-10rem);
+    }
+
+    80%{
+        transform: translateX(1rem);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveinright{
+    0%{
+        opacity: 0;
+        transform: translateX(10rem);
+    }
+
+    80%{
+        transform: translateX(-1rem); 
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveinbutton{
+    0%{
+        opacity: 0;
+        transform: translateY(3rem);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* these are psuedoclasses which are applied to certain property of an element like when button as a link or when button has been visited once */
+.btn:link, .btn:visited{
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    display: inline-block; 
+    border-radius: 10rem;
+    transition: all 0.2s;   
+    /* here transition property defines the animation for button where all represents every psuedo property related to button will be animated and transition property is applied to intial stage. In below animation when we hover the button there is shadow and when we click the button its shadowness reduces*/
+
+    position: relative;
+    font-size: 1.6rem;
+}
+
+.btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.2);
+}
+
+/* active state is when we click the button */
+
+.btn:active{
+    transform: translateY(-1px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+}
+
+.btn--white{
+    background-color: #fff;
+    color: #777;
+
+}
+
+/* this below is psuedoelement which is applied specific part of selected element so the after psuedoelement adds virtual element right after the element we are selecting(acts as child of the element) and we can style that element and add cool effects to that element*/
+
+.btn::after{
+    content: "";
+    /* content has to be set so that the after psuedoelement properties are visible on page */
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 10rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    /* zindex defines which element is on top of another so the after element is behind the main button */
+    transition: all 0.4s;
+}
+
+.btn--white::after{
+    background-color: #fff;
+}
+
+.btn:hover::after{
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;  
+}
+
+.btn--animated{
+    animation: moveinbutton 0.5s ease-out .75s;
+    animation-fill-mode: backwards;
+    /* this animation fill mode will automatically apply the syles upto zero percent to the button before the animation starts. */
+}
